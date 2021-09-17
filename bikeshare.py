@@ -20,7 +20,7 @@ def get_filters():
     
     # get user input for city (chicago, new york city, washington).
     while True:
-        city = input('Which you like to see data for chicago, new york city or washington?\n').lower()
+        city = input('Which you like to see data for chicago, new york city or washington?\n').lower().strip()
         if city not in CITY_DATA.keys():
             print('Please, Enter city name correctly.\n')
             continue
@@ -31,7 +31,7 @@ def get_filters():
     filter_list=['month','day','both','none']
     # ask for filter type
     while True:
-        filter_type=input('Would you like to filter data by month, day, both or not at all? Type "none" for no time filter.\n').lower()
+        filter_type=input('Would you like to filter data by month, day, both or not at all? Type "none" for no time filter.\n').lower().strip()
         if filter_type not in filter_list:
             print('Please, Enter filter type correctly.\n')
             continue
@@ -49,7 +49,7 @@ def get_filters():
     if filter_type.lower() == 'month':
         # TO DO: get user input for month
         while True:
-            month = input('Enter the Month/all if you search in all monthes.\n').lower()
+            month = input('Enter the Month/all if you search in all monthes.\n').lower().strip()
             if month not in month_check_list:
                 print('Please, Enter month correctly.\n')
                 continue
@@ -60,7 +60,7 @@ def get_filters():
     elif filter_type.lower() == 'day':
         # TO DO: get user input for day 
         while True:
-            day = input('Enter the Day name/all if you search in all days.\n').lower()
+            day = input('Enter the Day name/all if you search in all days.\n').lower().strip()
             if day not in day_check_list:
                 print('Please, Enter day correctly.\n')
                 continue
@@ -71,7 +71,7 @@ def get_filters():
     elif filter_type.lower() == 'both':
         # TO DO: get user input for both
         while True:
-            month = input('Enter the Month/all if you search in all monthes.\n').lower()
+            month = input('Enter the Month/all if you search in all monthes.\n').lower().strip()
             if month not in month_check_list:
                 print('Please, Enter month name correctly.\n')
                 continue
@@ -79,7 +79,7 @@ def get_filters():
                 break
                 
         while True:
-            day = input('Enter the Day name/all if you search in all days.\n').lower()
+            day = input('Enter the Day name/all if you search in all days.\n').lower().strip()
             if day not in day_check_list:
                 print('Please, Enter day name correctly.\n')
                 continue
@@ -201,6 +201,30 @@ def user_stats(df):
     print("\nThis took %s seconds." % (time.time() - start_time))
     print('-'*40)
     
+def view_rows(df):
+    '''Display 5 rows'''
+    '''
+    input: data Frame Object
+    output: print the rows needed    
+    '''
+    # take response from user
+    res = input('To view the first 5 rows in avalibale data please enter ["yes","no"].\n').lower().strip()
+    if res == 'yes':
+        x=5
+        # print first 5 rows
+        print(df.head())
+        while True:
+            # take response from user
+            res2 = input('To view more 5 rows in avalibale data please enter ["yes","no"].\n').lower().strip()
+            if res2 == 'yes'and x+5 <= df.count()[0]:
+                print(df[x:x+5])
+                x+=5
+            else:
+                print('End Veiw.')
+                break
+                
+    
+            
     
 def main():
     while True:
@@ -214,11 +238,14 @@ def main():
         if city != 'washington':
             user_stats(df)
         
+        view_rows(df)
+        
         restart_list=['yes','no']
         while True:
-            restart = input('\nWould you like to restart? Enter yes or no.\n')
+            restart = input('\nWould you like to restart? Enter yes or no.\n').strip()
             if restart in restart_list:
                 break
+        
         
         if restart.lower() == 'no':
                 break
